@@ -1,100 +1,155 @@
 # Backify
 
-Browser-based Spotify playlist & liked-song backup/restore tool.  
-Zero backend. All data stays in your browser.
+Spotify Playlist and Library Backup Tool
+
+Backify is a browser-based application that allows users to back up and restore their Spotify playlists and liked songs into a single JSON file.
+
+All operations are performed client-side. No user data is stored on any external server.
 
 ---
 
-## Project structure
+## Overview
 
-```
+Backify connects to a user’s Spotify account using the Authorization Code Flow with PKCE and retrieves playlist and library data. The application then generates a structured backup file which can later be used to restore the same data.
+
+---
+
+## Demo
+
+### Login Interface
+
+![Login UI](./assets/demo-login.png)
+
+### Dashboard After Login
+
+![Dashboard UI](./assets/demo-dashboard.png)
+
+---
+
+## Features
+
+* Spotify authentication using OAuth 2.0 (PKCE)
+* Backup of all playlists including track data
+* Backup of liked songs
+* Export to a single JSON file
+* Restore playlists and liked songs from backup
+* Progress tracking during backup and restore
+* Fully client-side execution with no backend dependency
+
+---
+
+## Technology Stack
+
+* HTML, CSS, JavaScript (Vanilla)
+* Spotify Web API
+* OAuth 2.0 Authorization Code Flow with PKCE
+* LocalStorage for session management
+* Static hosting (Cloudflare)
+
+---
+
+## Project Structure
+
+```text
 backify/
-├── index.html       ← Main app UI
-├── callback.html    ← OAuth redirect handler
-├── app.js           ← All logic (auth, backup, restore)
-├── config.js        ← Spotify app credentials & config
-├── _headers         ← Cloudflare Pages security headers
-├── _redirects       ← Cloudflare Pages redirect rules
+├── index.html
+├── callback.html
+├── app.js
+├── config.js
 └── assets/
-    └── backify-icon.png
 ```
 
 ---
 
-## Deploy to Cloudflare Pages (recommended)
+## Setup Instructions
 
-### Option A — Git-connected deploy (easiest)
+1. Clone the repository:
 
-1. Push this folder to a GitHub / GitLab repo.
-2. Go to [Cloudflare Pages](https://pages.cloudflare.com) → **Create a project** → Connect to Git.
-3. Select your repo.
-4. **Build settings**: leave blank (no build command, no build output directory — deploy root as-is).
-5. Click **Save and Deploy**.
-6. Note your Pages URL, e.g. `https://backify.pages.dev`.
+```bash
+git clone https://github.com/shadowf97/backify.git
+```
 
-### Option B — Direct upload (no Git)
+2. Configure the application:
 
-1. Go to [Cloudflare Pages](https://pages.cloudflare.com) → **Create a project** → **Direct Upload**.
-2. Drag-and-drop the entire `backify/` folder.
-3. Note your Pages URL.
+Edit `config.js` and update the following:
 
----
-
-## Configure Spotify
-
-1. Open [Spotify Developer Dashboard](https://developer.spotify.com/dashboard).
-2. Select your app (or create one).
-3. Click **Edit Settings**.
-4. Under **Redirect URIs**, add:
-   ```
-   https://<your-pages-domain>/callback.html
-   ```
-   e.g. `https://backify.pages.dev/callback.html`
-5. Save.
-
-Then update `config.js`:
 ```js
 window.BACKIFY_CONFIG = {
-  SPOTIFY_CLIENT_ID: "<your client id>",
-  REDIRECT_URI:      "https://<your-pages-domain>/callback.html",
-  APP_BASE_PATH:     "/",
-  APP_NAME:          "Backify"
+  SPOTIFY_CLIENT_ID: "YOUR_CLIENT_ID",
+  REDIRECT_URI: "https://your-domain/callback.html",
+  APP_BASE_PATH: "/",
+  APP_NAME: "Backify"
 };
 ```
 
+3. Configure Spotify Developer Dashboard:
+
+Add the following Redirect URI:
+
+```text
+https://your-domain/callback.html
+```
+
+4. Deploy the project:
+
+You can deploy using:
+
+* Cloudflare Pages (recommended)
+* Netlify
+
 ---
 
-## Spotify Development Mode limits
+## How It Works
 
-While your Spotify app is in **Development Mode**, only up to 25 allowlisted
-users can log in.
+### Authentication
 
-To allow users:
-1. Spotify Developer Dashboard → your app → **Users and Access**.
-2. Add each user's Spotify email.
+The user logs in using Spotify. The app uses PKCE to securely obtain access and refresh tokens.
 
-To go beyond 25 users, apply for **Extended Quota Mode** via the Dashboard.
+### Backup
+
+* Fetch user profile
+* Fetch playlists and their tracks
+* Fetch liked songs
+* Generate and download a JSON backup file
+
+### Restore
+
+* Upload backup file
+* Recreate playlists
+* Re-add tracks to playlists
+* Restore liked songs to the library
 
 ---
 
-## What was fixed (vs original)
+## Limitations
 
-| # | Issue | Fix |
-|---|-------|-----|
-| 1 | No CSRF protection | `state` param added to OAuth flow, verified on callback |
-| 2 | Buttons not locked during operations | `setOperationActive()` disables all controls |
-| 3 | No rate-limit handling | 429 + `Retry-After` respected, up to 4 retries |
-| 4 | Token refresh race condition | Singleton refresh promise |
-| 5 | No 401 auto-retry | One transparent retry after refresh |
-| 6 | `fetchAllPages` infinite-loop risk | 500-page guard added |
-| 7 | Duplicate `limit=` query param | `URL` constructor used instead of string concat |
-| 8 | `loadOverview` fetched all pages just to count | Uses paged `total` field — 2 API calls instead of N |
-| 9 | No restore confirmation | `confirm()` before destructive operation |
-| 10 | Restore always created private playlists | Respects `playlist.public` from backup |
-| 11 | Stale profile cache after account switch | Cache cleared on 401 |
+* Spotify Development Mode restricts usage to allowlisted users
+* Maximum of five users unless quota extension is approved
+* Some playlists may not be accessible due to permission restrictions
+* Some tracks may not restore due to regional or availability limitations
+
+---
+
+## Security
+
+* Uses Authorization Code Flow with PKCE
+* No client secret exposed in frontend
+* Tokens stored locally in browser
+* No external storage or server involved
+
+---
+
+## Future Improvements
+
+* Selective playlist backup and restore
+* Duplicate handling during restore
+* Cloud-based backup integration
+* Multi-account support
+
+
 
 ---
 
 ## License
 
-MIT
+This project is intended for educational and personal use.
