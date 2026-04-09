@@ -18,11 +18,11 @@ Backify connects to a user’s Spotify account using the Authorization Code Flow
 
 ### Login Interface
 
-![Login UI]([url=https://ibb.co.com/gZdkZysv][img]https://i.ibb.co.com/gZdkZysv/demo-login.png[/img][/url])
+![Login UI](https://i.ibb.co.com/s9C89jL5/demo-login.png)
 
 ### Dashboard After Login
 
-![Dashboard UI]([url=https://ibb.co.com/bMvRcbWq][img]https://i.ibb.co.com/bMvRcbWq/demo-dashboard.png[/img][/url])
+![Dashboard UI](https://i.ibb.co.com/NdNncTVQ/demo-dashboard.png)
 
 ---
 
