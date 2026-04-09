@@ -1,0 +1,6 @@
+# Cloudflare Workers / Pages — redirect rules
+# NOTE: Do NOT add a /callback -> /callback.html rule here.
+# That rule caused ERR_TOO_MANY_REDIRECTS because the Workers runtime
+# matched /callback.html against the /callback pattern and created an
+# infinite redirect chain. Spotify is configured to redirect directly
+# to /callback.html, so no redirect rule is needed.
