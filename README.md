@@ -1,7 +1,5 @@
 # Backify
 
-![Visit Backify](https://app.backify.workers.dev)
-
 Spotify Playlist and Library Backup Tool
 
 Backify is a browser-based application that allows users to back up and restore their Spotify playlists and liked songs into a single JSON file.
@@ -16,7 +14,8 @@ Backify connects to a user’s Spotify account using the Authorization Code Flow
 
 ---
 
-## Demo
+## Demo 
+![BackifyWeb](https://app.backify.workers.dev/)
 
 ### Login Interface
 
