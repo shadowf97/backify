@@ -1,6 +1,6 @@
 # Backify
 
-![Visit Backify](https://app.backify.workers.dev/)
+![Visit Backify](https://app.backify.workers.dev)
 
 Spotify Playlist and Library Backup Tool
 
