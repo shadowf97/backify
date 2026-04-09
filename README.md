@@ -15,7 +15,7 @@ Backify connects to a user’s Spotify account using the Authorization Code Flow
 ---
 
 ## Demo 
-![BackifyWeb](https://app.backify.workers.dev/)
+app.backify.workers.dev
 
 ### Login Interface
 
